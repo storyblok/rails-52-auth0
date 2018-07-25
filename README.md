@@ -1,7 +1,8 @@
-# README
+# Rails 5.2 Auth0 example
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Tutorial can be found here: https://www.storyblok.com/tp/how-to-add-auth0-authentication-to-a-ruby-on-rails-api
+
+![Auth0 + Rails](https://img.storyblok.com/7_po16_NKVKByN-y4kI6YvwVtuw=/840x0/filters:filters:format(jpeg)/f/39898/2942x538/ba76ff4248/auth0-rails.jpg)
 
 * Ruby version
 Ruby 2.5.0, Rails 5.2
@@ -15,5 +16,3 @@ Create a Postgresql 9.6.2
 ```
 rails s -p 4000
 ```
-
-## 
