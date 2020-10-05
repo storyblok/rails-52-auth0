@@ -12,7 +12,8 @@ module Secured
 
   def authenticate_request!
     auth_token
-  rescue JWT::VerificationError, JWT::DecodeError
+  rescue JWT::VerificationError, JWT::DecodeError => e
+    logger.info { e.message }
     render json: { errors: ['Not Authenticated'] }, status: :unauthorized
   end
 
