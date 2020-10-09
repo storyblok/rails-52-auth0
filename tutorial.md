@@ -1,11 +1,11 @@
 # Create a Ruby on Rails backend with Auth0 Authentication
 
-In this tutorial we will walk you through the a setup of an Ruby on Rails 5.2 API Application combined with Auth0. After this you will have an API with private and public routes than you can use for our tutorial on "How to add Auth0 to Vue.js in 7 Steps" which allows you to make authenticated calls on this API. During this tutorial you will learn how to setup a custom Concern, a Json Web Token verification, a Private and a Public route that return JSON. 
+In this tutorial we will walk you through the a setup of an Ruby on Rails 6.0 API Application combined with Auth0. After this you will have an API with private and public routes than you can use for our tutorial on "How to add Auth0 to Vue.js in 7 Steps" which allows you to make authenticated calls on this API. During this tutorial you will learn how to setup a custom Concern, a Json Web Token verification, a Private and a Public route that return JSON.
 
 ## Requirements
 
 - Ruby installed -> 2.5.0p0
-- Rails installed -> 5.2.0
+- Rails installed -> 6.0
 - [Auth0 Account](https://auth0.com/)
 
 ### What is Rails
@@ -18,7 +18,7 @@ Auth0 provides authentication and authorization as a service. They are here to g
 
 ## Auth0 Setup
 
-Before we start our dig into Rails 5.2 and the setup, we will access the Auth0 application to add an API so we can configure our application accordingly. To do so access the [API Menu in the Management App (manage.auth0.com/#/apis)](https://manage.auth0.com/#/apis).
+Before we start our dig into Rails 6.0 and the setup, we will access the Auth0 application to add an API so we can configure our application accordingly. To do so access the [API Menu in the Management App (manage.auth0.com/#/apis)](https://manage.auth0.com/#/apis).
 
 ![Auth0 API Management Dashboard](//a.storyblok.com/f/39898/1488x926/3b9d8fa1f4/auth0-api-dashboard.jpg)
 
@@ -64,7 +64,7 @@ bundle install
 
 The code we're going to use is directly from the [official Auth0 Ruby on Rails](https://auth0.com/docs/quickstart/backend/rails/01-authorization) getting started which I highly recommend you to open as well since it ships with your project configuration out of the box.
 
-Before we will create a `JsonWebToken` class, which we will use to verify the incoming AccessToken of the Request `Authorization` Header, we have to make some adjustments: Rails 5.2 has some changes that will require you to either change your understanding of the `/app` and `/lib` folder or to add one line to allow the "old" behavior. Since with 5.2 you will not be able to directly use the `/lib` directory for non domain specific classes. There are two way to approach this:
+Before we will create a `JsonWebToken` class, which we will use to verify the incoming AccessToken of the Request `Authorization` Header, we have to make some adjustments: From Rails 5.2, there are some changes that will require you to either change your understanding of the `/app` and `/lib` folder or to add one line to allow the "old" behavior. Since from Rails 5.2 you will not be able to directly use the `/lib` directory for non domain specific classes. There are two way to approach this:
 
 ~~~bash
 # 1: Move /lib in to /app/lib
@@ -117,18 +117,18 @@ end
 
 ## Adding your Auth0 API Audience
 
-With Rails 5.2 is out with a brand new credentials API that will replace the current `config/secrets.yml`. The idea behind the change is mainly to remove some of the confusion introduced by the combinations of `config/secrets.yml`, `config/secrets.yml.enc` and `SECRET_BASE_KEY` used in earlier versions of Rails, and attempt to unify everything using a more straightforward approach. You can read more about this Change in their [Pull Request on Github](https://github.com/rails/rails/pull/30067).
+From Rails 5.2 we have a brand new credentials API that will replace the current `config/secrets.yml`. The idea behind the change is mainly to remove some of the confusion introduced by the combinations of `config/secrets.yml`, `config/secrets.yml.enc` and `SECRET_BASE_KEY` used in earlier versions of Rails, and attempt to unify everything using a more straightforward approach. You can read more about this Change in their [Pull Request on Github](https://github.com/rails/rails/pull/30067).
 
 Your Rails application should already have those two files available instead:
 
 - `config/credentials.yml.enc`
 - `config/master.key`
 
-As it’s extension `.enc` suggests, this file is going to be encrypted using the `master.key` - nobody be able to read what’s inside - unless they have the proper master key to decrypt it. So **you can add** the `config/credentials.yml.enc` to your version control. On the other hand the `config/master.key` **should not** be in your version control eg. git repository. New Rails 5.2 apps already have it in the `.gitignore` to make sure you won't commit it. Everybody that has that `config/master.key` file will be able to decrypt your `credentials.yml.enc` file and therefore has access to your credentials. 
+As it’s extension `.enc` suggests, this file is going to be encrypted using the `master.key` - nobody be able to read what’s inside - unless they have the proper master key to decrypt it. So **you can add** the `config/credentials.yml.enc` to your version control. On the other hand the `config/master.key` **should not** be in your version control eg. git repository. New Rails 5.2(and above) apps already have it in the `.gitignore` to make sure you won't commit it. Everybody that has that `config/master.key` file will be able to decrypt your `credentials.yml.enc` file and therefore has access to your credentials.
 
 ### Editing your encrypted Rails credentials file
 
-Rails 5.2 comes with a way to edit the `config/credentials.yml.enc` so you won't have to decrypt and encrypt your file each time on your own. For this to work with your favorite editor you will have to have `$EDITOR` defined, to do so in one command you can use the list below, let me know in the comments or on Twitter which editor you use and how you edited it.
+Rails 5.2(and above) comes with a way to edit the `config/credentials.yml.enc` so you won't have to decrypt and encrypt your file each time on your own. For this to work with your favorite editor you will have to have `$EDITOR` defined, to do so in one command you can use the list below, let me know in the comments or on Twitter which editor you use and how you edited it.
 
 ~~~bash
 # Visual Studio Code
@@ -333,6 +333,6 @@ and expect the following result:
 
 ## Wrapping it up
 
-Adding Auth0 to an Rails application is unbelievable easy by following the offical guide. However, since it currently does not cover the differences in Rails 5.2 I felt the need to update and document that part for you so you won't fall into the above changes. The benefits from not writing your own Authentication in every application and instead use an Identify Service like Auth0 are such boost for your productivity and increase in security that I would highly recommend you to check it out yourself. 
+Adding Auth0 to an Rails application is unbelievable easy by following the offical guide. However, since it currently does not cover the differences in Rails versions above 5.2 I felt the need to update and document that part for you so you won't fall into the above changes. The benefits from not writing your own Authentication in every application and instead use an Identify Service like Auth0 are such boost for your productivity and increase in security that I would highly recommend you to check it out yourself.
 
-With the changes in Rails 5.2 that enables you to actually use encrypted credentials out of the box are great, even tho some will miss the old, now deprecated, secrets.yml. The issue with the lib folder was intresting to read on Github and took me longer to find the "best" way as I wished for. As many of you requested this is now the first API part of the Auth0 tutorials we created at Storyblok, since we do use Ruby and Auth0 ourselves. Feel free to leave your comments down below or write your tweet your feedback on twitter.
+With the changes from Rails 5.2 that enables you to actually use encrypted credentials out of the box are great, even tho some will miss the old, now deprecated, secrets.yml. The issue with the lib folder was interesting to read on Github and took me longer to find the "best" way as I wished for. As many of you requested this is now the first API part of the Auth0 tutorials we created at Storyblok, since we do use Ruby and Auth0 ourselves. Feel free to leave your comments down below or write your tweet your feedback on twitter.
